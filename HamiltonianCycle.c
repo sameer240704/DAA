@@ -3,17 +3,23 @@
 #include <stdlib.h>
 int V;
 
-void printSolution(int path[]);
+// A utility function to print the solution
+void printSolution(int *path) {
+    for (int i = 0; i < V; i++)
+        printf(" %d ", path[i]);
+    printf(" %d ", path[0]);
+    printf("\n\n");
+}
 
 /* A utility function to check if the vertex v can be added at index 'pos' in the Hamiltonian Cycle constructed so far (stored in 'path[]') */
 bool isSafe(int v, bool **graph, int *path, int pos) {
     // Check if this vertex is an adjacent vertex of the previously added vertex
-    if (graph[path[pos - 1]][v] == 0)
+    if(graph[path[pos - 1]][v] == 0)
         return false;
 
     // Check if the vertex has already been included
     for (int i = 0; i < pos; i++)
-        if (path[i] == v)
+        if(path[i] == v)
             return false;
 
     return true;
@@ -22,9 +28,9 @@ bool isSafe(int v, bool **graph, int *path, int pos) {
 /* A recursive utility function to solve Hamiltonian cycle problem */
 bool hamCycleUtil(bool **graph, int *path, int pos, int *count) {
     // Base case: If all vertices are included in the Hamiltonian cycle
-    if (pos == V) {
+    if(pos == V) {
         // And if there is an edge from the last included vertex to the first vertex
-        if (graph[path[pos - 1]][path[0]] == 1) {
+        if(graph[path[pos - 1]][path[0]] == 1) {
             (*count)++;
             printf("Hamiltonian Cycle %d: \n", *count);
             printSolution(path);
@@ -35,7 +41,7 @@ bool hamCycleUtil(bool **graph, int *path, int pos, int *count) {
 
     // Try different vertices as the next candidate in Hamiltonian Cycle
     for (int v = 1; v < V; v++) {
-        if (isSafe(v, graph, path, pos)) {
+        if(isSafe(v, graph, path, pos)) {
             path[pos] = v;
 
             // Recur to construct the rest of the path
@@ -69,14 +75,6 @@ void hamCycle(bool **graph) {
     free(path);
 }
 
-// A utility function to print the solution
-void printSolution(int path[]) {
-    for (int i = 0; i < V; i++)
-        printf(" %d ", path[i]);
-    printf(" %d ", path[0]);
-    printf("\n");
-}
-
 int main() {
     printf("Enter the number of vertices in the graph: ");
     scanf("%d", &V);
@@ -85,7 +83,7 @@ int main() {
     for(int i = 0; i < V; i++)
         graph[i] = (bool *) malloc (V * sizeof(bool));
 
-    printf("Enter the adjacency matrix (1 for edge, 0 for no edge):\n");
+    printf("\nEnter the adjacency matrix (1 for edge, 0 for no edge):\n");
     for(int i = 0; i < V; i++)
         for(int j = 0; j < V; j++) {
             int input;
